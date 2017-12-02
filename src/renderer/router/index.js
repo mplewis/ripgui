@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import LandingPage from '@/components/LandingPage'
+import Ripgrep from '@/components/Ripgrep'
 
 Vue.use(Router)
 
@@ -9,7 +9,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: LandingPage
+      component: Ripgrep
     },
     {
       path: '*',
