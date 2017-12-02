@@ -5,6 +5,7 @@
   <input v-model="query" v-stream:keyup="{subject: query$, data: query}" placeholder="query" />
   <input v-model="path" v-stream:keyup="{subject: path$, data: path}" placeholder="path" />
   <input v-model="options" v-stream:keyup="{subject: options$, data: options}" placeholder="options" />
+  <pre><code>{{ args }}</code></pre>
 </div>
 </template>
 
@@ -14,10 +15,10 @@ import { isEqual } from 'lodash'
 
 export default {
   name: 'Ripgrep',
-  data: () => ({ query: '', path: '', options: '' }),
+  data: () => ({ query: '', path: '', options: '', args: null }),
   domStreams: ['query$', 'path$', 'options$'],
   mounted () {
-    this.eventStream().subscribe(console.warn)
+    this.eventStream().subscribe(args => this.args = args)
   },
 
   methods: {
@@ -26,7 +27,13 @@ export default {
       const query = Observable.concat(empty, this.query$.map(({ data }) => data))
       const path = Observable.concat(empty, this.path$.map(({ data }) => data))
       const options = Observable.concat(empty, this.options$.map(({ data }) => data))
-      return Observable.combineLatest([query, path, options]).distinct(tuple => tuple.toString())
+
+      const updates = Observable
+        .combineLatest([query, path, options])
+        .filter(([query,]) => query !== '')
+        .distinctUntilChanged(isEqual)
+        .debounceTime(300);
+      return updates
     }
   }
 }
