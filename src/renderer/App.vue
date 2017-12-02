@@ -5,11 +5,7 @@
 </template>
 
 <script>
-  export default {
-    name: 'ripgui'
-  }
+export default {
+  name: 'RipGUI'
+}
 </script>
-
-<style>
-  /* CSS */
-</style>
