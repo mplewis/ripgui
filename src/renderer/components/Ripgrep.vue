@@ -21,7 +21,7 @@ import process from 'child_process'
 import { Observable } from 'rxjs/Observable'
 import { isEqual } from 'lodash'
 
-const DEFAULT_OPTIONS = '-C 3'
+const DEFAULT_OPTIONS = '-n -C 3'
 
 export default {
   name: 'Ripgrep',
@@ -86,7 +86,7 @@ function backgroundProcess(cmd, ...args) {
     proc.stdout.on('data', data => stdout += data)
     proc.stderr.on('data', data => stderr += data)
     proc.on('close', code => {
-      console.warn('Exited with return code', code)
+      if (code !== 0) console.warn('Exited with return code', code)
       if (stderr !== '') console.warn(stderr)
       resolve({ code, stdout, stderr })
     })
