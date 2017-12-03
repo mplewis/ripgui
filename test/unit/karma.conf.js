@@ -25,8 +25,10 @@ delete webpackConfig.externals
 delete webpackConfig.output.libraryTarget
 
 // apply vue option to apply isparta-loader on js
-webpackConfig.module.rules
-  .find(rule => rule.use.loader === 'vue-loader').use.options.loaders.js = 'babel-loader'
+webpackConfig.module.rules.find(
+  rule => rule.use.loader === 'vue-loader'
+).use.options.loaders.js =
+  'babel-loader'
 
 module.exports = config => {
   config.set({
@@ -36,13 +38,10 @@ module.exports = config => {
     },
     coverageReporter: {
       dir: './coverage',
-      reporters: [
-        { type: 'lcov', subdir: '.' },
-        { type: 'text-summary' }
-      ]
+      reporters: [{ type: 'lcov', subdir: '.' }, { type: 'text-summary' }]
     },
     customLaunchers: {
-      'visibleElectron': {
+      visibleElectron: {
         base: 'Electron',
         flags: ['--show']
       }
@@ -53,7 +52,6 @@ module.exports = config => {
       './index.js': ['webpack', 'sourcemap']
     },
     reporters: ['spec', 'coverage'],
-    singleRun: true,
     webpack: webpackConfig,
     webpackMiddleware: {
       noInfo: true
