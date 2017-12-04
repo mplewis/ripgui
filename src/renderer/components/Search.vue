@@ -4,30 +4,37 @@
     <h1>RipGUI</h1>
 
     <div class="inputs">
-      <input v-model="query" v-stream:keyup="query$" placeholder="needle" />
-      <input v-model="path" v-stream:keyup="path$" v-bind:placeholder="cwd" />
+      <input v-model="query" v-stream:keyup="query$" placeholder="Query" />
+      <input v-model="path" v-stream:keyup="path$" placeholder="Target directory" />
       <input v-model="options" v-stream:keyup="options$" placeholder="ripgrep options" />
     </div>
   </div>
 
   <div class="output">
-    <p v-if="loading">Loading...</p>
-    <div v-else-if="queryPresent">
+    <div v-if="!queryPresent">
+      <p>Current target directory: {{ targetDirectory }}</p>
+      <p>Type a query to grep for. Press Escape to escape regex characters.</p>
+    </div>
+
+    <p v-else-if="searching">Searching...</p>
+
+    <div v-else-if="results.length === 0" class="no-results">
+      No results found for query:
+      <div><pre><code>{{ query }}</code></pre></div>
+    </div>
+
+    <div v-else>
       <pre class="error"><code>{{ stderr }}</code></pre>
       <div v-for="(result, index) in results" v-bind:key="index">
         <FileResults v-bind:file="result.file" v-bind:lines="result.lines" />
       </div>
-    </div>
-    <div v-else>
-      <p>Type a query to grep for.</p>
-      <p>Press Escape to escape regex characters.</p>
     </div>
   </div>
 </div>
 </template>
 
 <script>
-import { basename } from 'path'
+import { basename, resolve } from 'path'
 import { Observable } from 'rxjs/Observable'
 import { isEqual, escapeRegExp } from 'lodash'
 
@@ -38,13 +45,13 @@ export default {
   name: 'Search',
   components: { FileResults },
   data: () => ({
-    cwd: `haystack (…/${basename(process.cwd())})`,
+    targetDirectory: null,
     query: '',
     path: '',
     options: '',
-    loading: false,
     queryPresent: false,
-    results: '',
+    searching: false,
+    results: [],
     stderr: '',
   }),
   domStreams: ['query$', 'path$', 'options$'],
@@ -52,15 +59,19 @@ export default {
   mounted() {
     this.eventStream().subscribe(({ query, path, options }) => {
       this.queryPresent = query !== '';
-      this.loading = false
+      this.searching = false
       if (!this.queryPresent) return
 
-      this.loading = true
+      this.searching = true
       rg(query, path, options).then(({ results, stderr }) => {
-        this.loading = false
+        this.searching = false
         this.results = results
         this.stderr = stderr
       })
+    })
+
+    this.eventStream().subscribe(({ path }) => {
+      this.targetDirectory = resolve(path)
     })
   },
 
@@ -81,7 +92,8 @@ export default {
         .combineLatest([query, path, options])
         .distinctUntilChanged(isEqual)
         .map(([query, path, options]) => ({ query, path, options }))
-        .debounceTime(200);
+        .debounceTime(250);
+
       return updates
     }
   }
@@ -106,6 +118,7 @@ input {
   font-family: "Fira Code", monospace;
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
 }
 
 .ripgui {
@@ -129,6 +142,14 @@ input {
 
 .output {
   margin-top: 140px;
+}
+
+.no-results pre {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 }
 
 .inputs {
