@@ -3,9 +3,9 @@
   <h1>RipGUI</h1>
 
   <div class="inputs">
-    <input v-model="query" v-stream:keyup="{subject: query$, data: query}" placeholder="needle" />
-    <input v-model="path" v-stream:keyup="{subject: path$, data: path}" placeholder="/home/haystack" />
-    <input v-model="options" v-stream:keyup="{subject: options$, data: options}" placeholder="ripgrep options" />
+    <input v-model="query" v-stream:keyup="query$" v:keyup="console.log" placeholder="needle" />
+    <input v-model="path" v-stream:keyup="path$" placeholder="/home/haystack" />
+    <input v-model="options" v-stream:keyup="options$" placeholder="ripgrep options" />
   </div>
 
   <p v-if="loading">Loading...</p>
@@ -35,11 +35,6 @@ export default {
     stderr: '',
   }),
   domStreams: ['query$', 'path$', 'options$'],
-  subscriptions () {
-    return {
-      args: this.eventStream()
-    }
-  },
 
   mounted() {
     this.eventStream().subscribe(({ query, path, options }) => {
@@ -64,9 +59,9 @@ export default {
   methods: {
     eventStream() {
       const empty = Observable.of('')
-      const query = Observable.concat(empty, this.query$.map(({ data }) => data))
-      const path = Observable.concat(empty, this.path$.map(({ data }) => data))
-      const options = Observable.concat(empty, this.options$.map(({ data }) => data))
+      const query = Observable.concat(empty, this.query$.map(() => this.query))
+      const path = Observable.concat(empty, this.path$.map(() => this.path))
+      const options = Observable.concat(empty, this.options$.map(() => this.options))
 
       const updates = Observable
         .combineLatest([query, path, options])
