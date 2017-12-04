@@ -115,11 +115,11 @@ input {
   display: flex;
 }
 
-.inputs input {
+.inputs * {
   flex: 1;
 }
 
-.inputs input:not(:first-child) {
+.inputs *:not(:first-child) {
   margin-left: 20px;
 }
 
