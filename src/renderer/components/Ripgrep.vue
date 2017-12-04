@@ -46,9 +46,10 @@ export default {
       if (!this.queryPresent) return
 
       this.loading = true
-      rg(query, path, options).then(({ stdout, stderr }) => {
+      rg(query, path, options).then(({ results, stderr }) => {
+        console.log(results)
         this.loading = false
-        this.stdout = stdout
+        this.stdout = results
         this.stderr = stderr
       })
     })

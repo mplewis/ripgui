@@ -1,6 +1,8 @@
 import process from 'child_process'
 import { compact } from 'lodash'
 
+import parse from '@/parsers/rg'
+
 function backgroundProcess (cmd, args) {
   return new Promise((resolve, reject) => {
     const proc = process.spawn(cmd, args)
@@ -16,5 +18,9 @@ const DEFAULT_OPTIONS = '-n -C 3'
 
 export default async function rg (query, path, options) {
   options = `${DEFAULT_OPTIONS} ${options}`.split(' ')
-  return backgroundProcess('rg', compact([...options, query, path]))
+  const args = compact([...options, query, path])
+  const { stdout, stderr } = await backgroundProcess('rg', args)
+
+  const results = parse(stdout)
+  return { results, stderr }
 }
