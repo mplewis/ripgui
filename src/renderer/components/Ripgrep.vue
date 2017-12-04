@@ -20,7 +20,7 @@
 <script>
 import process from 'child_process'
 import { Observable } from 'rxjs/Observable'
-import { isEqual } from 'lodash'
+import { isEqual, escapeRegExp } from 'lodash'
 
 const DEFAULT_OPTIONS = '-n -C 3'
 
@@ -60,7 +60,13 @@ export default {
   methods: {
     eventStream() {
       const empty = Observable.of('')
-      const query = Observable.concat(empty, this.query$.map(() => this.query))
+
+      const queryWithEscaping = this.query$.map(({ event }) => {
+        if (event.key === 'Escape') this.query = escapeRegExp(this.query)
+        return this.query
+      })
+
+      const query = Observable.concat(empty, queryWithEscaping)
       const path = Observable.concat(empty, this.path$.map(() => this.path))
       const options = Observable.concat(empty, this.options$.map(() => this.options))
 
