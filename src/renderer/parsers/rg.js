@@ -34,7 +34,7 @@ export default function parse (stdout) {
   stdout = stdout.trim()
   if (stdout === '') return []
   return stdout
-    .split('--')
+    .split('\n--\n')
     .map(parseBundle)
     .map(groupByFile)
 }

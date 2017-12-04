@@ -22,6 +22,9 @@ describe('parse', function () {
       --
       test/unit/index.js:1:import Vue from 'vue'
       test/unit/index.js-2-Vue.config.devtools = false
+      --
+      with-dashes.sh:1:--this-should-parse-properly
+      with-dashes.sh-2-  in addition, --so-should-this
     `
 
     it('returns parsed results for each file', function () {
@@ -62,6 +65,13 @@ describe('parse', function () {
           lines: [
             { num: 1, exact: true, content: "import Vue from 'vue'" },
             { num: 2, exact: false, content: 'Vue.config.devtools = false' }
+          ]
+        },
+        {
+          file: 'with-dashes.sh',
+          lines: [
+            { num: 1, exact: true, content: '--this-should-parse-properly' },
+            { num: 2, exact: false, content: '  in addition, --so-should-this' }
           ]
         }
       ])
