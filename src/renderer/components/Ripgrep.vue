@@ -13,7 +13,10 @@
     <pre class="error"><code>{{ stderr }}</code></pre>
     <pre><code>{{ stdout }}</code></pre>
   </div>
-  <p v-else>Type a query to grep for.</p>
+  <div v-else>
+    <p>Type a query to grep for.</p>
+    <p>Press Escape to escape regex characters.</p>
+  </div>
 </div>
 </template>
 
