@@ -31,7 +31,19 @@ export default {
   },
   methods: {
     open() {
-      backgroundProcess('open', [this.file]).then(console.log)
+      backgroundProcess('open', [this.file]).then(({ code, stderr }) => {
+        if (code === 0) return
+        this.$toasted.show(stderr, {
+          className: 'toast',
+          position: 'bottom-center',
+          fullWidth: true,
+          duration: 0,
+          action: {
+            text: '✖',
+            onClick: (e, toast) => toast.goAway(0)
+          }
+        })
+      })
     }
   }
 }
@@ -65,5 +77,25 @@ function backgroundProcess (cmd, args) {
   margin-top: 0;
   margin-bottom: 8px;
   font-weight: bold;
+}
+
+.toasted-container.full-width {
+  right: 2%;
+  max-width: 96%;
+  margin-bottom: -20px;
+}
+
+.toasted.primary {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 4px;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: normal;
+  color: white;
+  background-color: rgba(231, 76, 60, 1);
+}
+
+.toasted-container .toasted .action {
+  color: white;
 }
 </style>

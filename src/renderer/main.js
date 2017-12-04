@@ -13,10 +13,13 @@ import 'rxjs/add/operator/distinctUntilChanged'
 import 'rxjs/add/operator/filter'
 import 'rxjs/add/operator/map'
 
+import Toasted from 'vue-toasted'
+
 import App from './App'
 import router from './router'
 
 Vue.use(VueRx, { Observable, Subscription, Subject })
+Vue.use(Toasted)
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.config.productionTip = false
