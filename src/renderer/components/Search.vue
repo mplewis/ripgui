@@ -1,5 +1,5 @@
 <template>
-<div class="ripgrep">
+<div class="ripgui">
   <h1>RipGUI</h1>
 
   <div class="inputs">
@@ -29,7 +29,7 @@ import { isEqual, escapeRegExp } from 'lodash'
 import rg from '@/interfaces/rg'
 
 export default {
-  name: 'Ripgrep',
+  name: 'Search',
   data: () => ({
     query: '',
     path: '',
@@ -97,7 +97,7 @@ input {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.ripgrep {
+.ripgui {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   margin-left: 20px;
   margin-right: 20px;
