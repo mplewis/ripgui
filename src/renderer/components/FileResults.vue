@@ -1,13 +1,15 @@
 <template>
 <div class="file-result" v-on:click="open">
   <p class="file-with-line">{{ file }} @ line {{ line }}</p>
-  <Result
-    v-for="(line, index) in lines"
-    v-bind:key="index"
-    v-bind:num="line.num"
-    v-bind:exact="line.exact"
-    v-bind:content="line.content"
-  />
+  <div class="scrollable-lines">
+    <Result
+      v-for="(line, index) in lines"
+      v-bind:key="index"
+      v-bind:num="line.num"
+      v-bind:exact="line.exact"
+      v-bind:content="line.content"
+    />
+  </div>
 </div>
 </template>
 
@@ -71,6 +73,14 @@ function backgroundProcess (cmd, args) {
 .file-result:hover {
   background-color: rgba(52, 152, 219, 0.3);
   cursor: pointer;
+}
+
+.scrollable-lines {
+  overflow-x: scroll;
+  padding-left: 12px;
+  margin-left: -12px;
+  padding-right: 12px;
+  margin-right: -12px;
 }
 
 .file-with-line {
