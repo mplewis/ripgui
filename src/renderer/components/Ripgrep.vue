@@ -11,7 +11,9 @@
   <p v-if="loading">Loading...</p>
   <div v-else-if="queryPresent">
     <pre class="error"><code>{{ stderr }}</code></pre>
-    <pre><code>{{ stdout }}</code></pre>
+    <div v-for="(result, index) in results" v-bind:key="index">
+      <pre><code>{{ result }}</code></pre>
+    </div>
   </div>
   <div v-else>
     <p>Type a query to grep for.</p>
@@ -34,7 +36,7 @@ export default {
     options: '',
     loading: false,
     queryPresent: false,
-    stdout: '',
+    results: '',
     stderr: '',
   }),
   domStreams: ['query$', 'path$', 'options$'],
@@ -49,7 +51,7 @@ export default {
       rg(query, path, options).then(({ results, stderr }) => {
         console.log(results)
         this.loading = false
-        this.stdout = results
+        this.results = results
         this.stderr = stderr
       })
     })
