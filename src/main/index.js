@@ -49,8 +49,6 @@ app.on('activate', () => {
   }
 })
 
-app.on('open-file', console.warn)
-
 /**
  * Auto Updater
  *
