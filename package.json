@@ -1,9 +1,9 @@
 {
   "name": "ripgui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "Matt Lewis <matt@mplewis.com>",
-  "description": "a gui for ripgrep",
-  "license": null,
+  "description": "A GUI for Ripgrep",
+  "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",

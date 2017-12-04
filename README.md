@@ -1,28 +1,52 @@
-# ripgui
+# RipGUI
 
-> a gui for ripgrep
+A GUI for [Ripgrep](https://github.com/BurntSushi/ripgrep). Built with
+[electron-vue](https://github.com/SimulatedGREG/electron-vue).
 
-#### Build Setup
+![Demo video](./docs/ripgui_demo.gif)
 
-``` bash
+# Features
+
+* Graphical user interface
+* Auto-escape regex characters
+* Click search results to open files
+
+# Usage
+
+```bash
 # install dependencies
-npm install
+brew install ripgrep
+yarn install
 
 # serve with hot reload at localhost:9080
-npm run dev
+yarn dev
 
 # build electron application for production
-npm run build
+yarn build
 
 # run unit & end-to-end tests
-npm test
-
+yarn test
+# or just the unit test server
+yarn unit
 
 # lint all JS/Vue component files in `src/`
-npm run lint
-
+yarn lint
 ```
 
----
+# Roadmap
 
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue)@[1c165f7](https://github.com/SimulatedGREG/electron-vue/tree/1c165f7c5e56edaf48be0fbb70838a1af26bb015) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+* Dropdown history
+  * with persistence between runs
+* Filetype include/exclude GUI
+  * and other Ripgrep options
+* Automated testing
+* Automated releases
+
+# Known bugs
+
+* Weird bad-filename-with-parens parsing
+* Hitting Escape a few times blows up the input and hangs the app
+
+# License
+
+MIT
