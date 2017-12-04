@@ -114,8 +114,8 @@ input {
 
 .ripgrep {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
-  margin-left: 40px;
-  margin-right: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .inputs {
