@@ -4,7 +4,7 @@
 
   <div class="inputs">
     <input v-model="query" v-stream:keyup="query$" v:keyup="console.log" placeholder="needle" />
-    <input v-model="path" v-stream:keyup="path$" placeholder="/home/haystack" />
+    <input v-model="path" v-stream:keyup="path$" v-bind:placeholder="cwd" />
     <input v-model="options" v-stream:keyup="options$" placeholder="ripgrep options" />
   </div>
 
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { basename } from 'path'
 import { Observable } from 'rxjs/Observable'
 import { isEqual, escapeRegExp } from 'lodash'
 
@@ -31,6 +32,7 @@ import rg from '@/interfaces/rg'
 export default {
   name: 'Search',
   data: () => ({
+    cwd: `haystack (…/${basename(process.cwd())})`,
     query: '',
     path: '',
     options: '',
