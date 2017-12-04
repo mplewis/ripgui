@@ -9,10 +9,11 @@
   </div>
 
   <p v-if="loading">Loading...</p>
-  <pre v-else-if="queryPresent"><code>{{ stdout }}</code></pre>
+  <div v-else-if="queryPresent">
+    <pre class="error"><code>{{ stderr }}</code></pre>
+    <pre><code>{{ stdout }}</code></pre>
+  </div>
   <p v-else>Type a query to grep for.</p>
-
-  <pre class="error"><code>{{ stderr }}</code></pre>
 </div>
 </template>
 
