@@ -21,11 +21,10 @@
 </template>
 
 <script>
-import process from 'child_process'
 import { Observable } from 'rxjs/Observable'
 import { isEqual, escapeRegExp } from 'lodash'
 
-const DEFAULT_OPTIONS = '-n -C 3'
+import rg from '@/interfaces/rg'
 
 export default {
   name: 'Ripgrep',
@@ -42,17 +41,12 @@ export default {
 
   mounted() {
     this.eventStream().subscribe(({ query, path, options }) => {
-      console.log(query, path, options)
       this.queryPresent = query !== '';
       this.loading = false
       if (!this.queryPresent) return
 
-      options = [DEFAULT_OPTIONS, options].join(' ')
-      const cmd = ['rg', ...options.split(' '), query, path].filter(chunk => chunk !== '')
-      console.log(cmd.join(' '))
-
       this.loading = true
-      backgroundProcess(...cmd).then(({ stdout, stderr }) => {
+      rg(query, path, options).then(({ stdout, stderr }) => {
         this.loading = false
         this.stdout = stdout
         this.stderr = stderr
@@ -81,21 +75,6 @@ export default {
       return updates
     }
   }
-}
-
-function backgroundProcess(cmd, ...args) {
-  return new Promise((resolve, reject) => {
-    const proc = process.spawn(cmd, args);
-    let stdout = ''
-    let stderr = ''
-    proc.stdout.on('data', data => stdout += data)
-    proc.stderr.on('data', data => stderr += data)
-    proc.on('close', code => {
-      if (code !== 0) console.warn('Exited with return code', code)
-      if (stderr !== '') console.warn(stderr)
-      resolve({ code, stdout, stderr })
-    })
-  })
 }
 </script>
 
