@@ -26,8 +26,8 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "ripgui",
-    "appId": "org.simulatedgreg.electron-vue",
+    "productName": "RipGUI",
+    "appId": "com.mplewis.ripgui",
     "directories": {
       "output": "build"
     },
