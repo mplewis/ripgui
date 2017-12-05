@@ -44,6 +44,7 @@ yarn lint
 * Move from CSS to Sass
 * Automated testing
 * Automated releases
+* Flow typing
 
 # Known bugs
 
