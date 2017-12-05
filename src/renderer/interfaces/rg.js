@@ -1,7 +1,7 @@
 import process from 'child_process'
 import { compact } from 'lodash'
 
-import parse from '@/parsers/rg'
+import parseAsync from '@/parsers/rg'
 
 function backgroundProcess (cmd, args) {
   return new Promise((resolve, reject) => {
@@ -21,6 +21,6 @@ export default async function rg (query, path, options) {
   const args = compact([...options, query, path])
   const { stdout, stderr } = await backgroundProcess('rg', args)
 
-  const results = parse(stdout)
+  const results = await parseAsync(stdout)
   return { results, stderr }
 }
