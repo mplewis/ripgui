@@ -48,8 +48,7 @@ yarn lint
 # Known bugs
 
 * Weird bad-filename-with-parens parsing
-* Hitting Escape a few times blows up the input and hangs the app
-* Cmd-A in boxes isn't selecting all
+* Escaping is subject to debounce time
 * Parser blocks when it runs for a long time
 
 # License

@@ -57,7 +57,10 @@ export default {
   domStreams: ['query$', 'path$', 'options$'],
 
   mounted() {
-    this.eventStream().subscribe(({ query, path, options }) => {
+    const stream = this.eventStream();
+
+    stream.subscribe(({ query, path, options }) => {
+      this.query = query // so escaping goes back into the box
       this.queryPresent = query !== '';
       this.searching = false
       if (!this.queryPresent) return
@@ -70,19 +73,23 @@ export default {
       })
     })
 
-    this.eventStream().subscribe(({ path }) => this.targetDirectory = resolve(path))
+    stream.subscribe(({ path }) => this.targetDirectory = resolve(path))
   },
 
   methods: {
     eventStream() {
       const empty = Observable.of('')
 
-      const queryWithEscaping = this.query$.map(({ event }) => {
-        if (event.key === 'Escape') this.query = escapeRegExp(this.query)
-        return this.query
-      })
+      const queries = this.query$
+        .filter(({ event }) => event.key !== 'Escape')
+        .map(() => this.query)
+      const escapes = this.query$
+        .map(({ event }) => event.key)
+        .distinctUntilChanged()
+        .filter(key => key === 'Escape')
+        .map(() => _.escapeRegExp(this.query))
+      const query = Observable.concat(empty, Observable.merge(queries, escapes));
 
-      const query = Observable.concat(empty, queryWithEscaping)
       const path = Observable.concat(empty, this.path$.map(() => this.path))
       const options = Observable.concat(empty, this.options$.map(() => this.options))
 
