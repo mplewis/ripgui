@@ -1,7 +1,6 @@
 <template>
 <div class="ripgui">
   <div class="header">
-    <h1>RipGUI</h1>
 
     <div class="inputs">
       <input v-model="query" v-stream:keyup="query$" placeholder="Query" />
@@ -12,6 +11,7 @@
 
   <div class="output">
     <div v-if="!queryPresent">
+      <h1>RipGUI</h1>
       <p>Current target directory: {{ targetDirectory }}</p>
       <p>Type a query to grep for. Press Escape to escape regex characters.</p>
     </div>
@@ -135,13 +135,13 @@ input {
   width: 100%;
   padding-left: 20px;
   padding-right: 20px;
-  height: 120px;
+  height: 70px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: white;
 }
 
 .output {
-  margin-top: 140px;
+  margin-top: 90px;
 }
 
 .no-results pre {
@@ -154,6 +154,7 @@ input {
 
 .inputs {
   display: flex;
+  margin-top: 20px;
 }
 
 .inputs * {
