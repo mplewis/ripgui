@@ -1,0 +1,71 @@
+.file-result {
+  background-color: rgba(52, 152, 219, 0.1);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 8px 12px;
+}
+
+.file-result:hover {
+  background-color: rgba(52, 152, 219, 0.3);
+  cursor: pointer;
+}
+
+.scrollable-lines {
+  overflow-x: scroll;
+  padding-left: 12px;
+  margin-left: -12px;
+  padding-right: 12px;
+  margin-right: -12px;
+}
+
+.file-with-line {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+/* results */
+
+pre {
+  margin: 0;
+}
+
+.result {
+  display: flex;
+  font-family: "Fira Code";
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.result.exact {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.result .num {
+  width: 40px;
+  text-align: right;
+  margin-right: 10px;
+  flex: 0 0 auto;
+}
+
+/* toast errors */
+
+.toasted-container.full-width {
+  right: 2%;
+  max-width: 96%;
+  margin-bottom: -20px;
+}
+
+.toasted.primary {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 4px;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: normal;
+  color: white;
+  background-color: rgba(231, 76, 60, 1);
+}
+
+.toasted-container .toasted .action {
+  color: white;
+}
