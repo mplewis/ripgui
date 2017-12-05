@@ -70,9 +70,7 @@ export default {
       })
     })
 
-    this.eventStream().subscribe(({ path }) => {
-      this.targetDirectory = resolve(path)
-    })
+    this.eventStream().subscribe(({ path }) => this.targetDirectory = resolve(path))
   },
 
   methods: {
