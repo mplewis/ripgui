@@ -2,10 +2,10 @@
 
 import { join } from 'path'
 
-export default function parseAsync (stdout: string) {
+export default function parseAsync (stdout: string): Promise<any> {
   const worker = new Worker(join(__dirname, 'rg_worker.js'))
   worker.postMessage(stdout)
-  return new Promise(
-    resolve => (worker.onmessage = ({ data }) => resolve(data))
-  )
+  return new Promise(resolve => {
+    worker.onmessage = ({ data }) => resolve(data)
+  })
 }
