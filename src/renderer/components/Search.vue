@@ -38,6 +38,8 @@
 </template>
 
 <script>
+// @flow
+
 import { basename, resolve } from 'path'
 import { Observable } from 'rxjs/Observable'
 import { isEqual, escapeRegExp } from 'lodash'

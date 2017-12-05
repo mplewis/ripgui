@@ -1,9 +1,11 @@
+// @flow
+
 import process from 'child_process'
 import { compact } from 'lodash'
 
-import parseAsync from '@/parsers/rg'
+import parseAsync from '../parsers/rg'
 
-function backgroundProcess (cmd, args) {
+function backgroundProcess (cmd: string, args: string[]) {
   return new Promise((resolve, reject) => {
     const proc = process.spawn(cmd, args)
     let stdout = ''
@@ -16,11 +18,11 @@ function backgroundProcess (cmd, args) {
 
 const DEFAULT_OPTIONS = '-n -C 3'
 
-export default async function rg (query, path, options) {
-  options = `${DEFAULT_OPTIONS} ${options}`.split(' ')
-  const args = compact([...options, query, path])
+export default async function rg (query: string, path: string, options: string) {
+  const optionsArr = `${DEFAULT_OPTIONS} ${options}`.split(' ')
+  const args = compact([...optionsArr, query, path])
   const { stdout, stderr } = await backgroundProcess('rg', args)
 
-  const results = await parseAsync(stdout)
+  const results: Object[] = await parseAsync(stdout)
   return { results, stderr }
 }

@@ -1,3 +1,5 @@
+// @flow
+
 // filename, line number, line content
 const EXACT = /(.+):(\d+):(.*)/
 const CONTEXT = /(.+)-(\d+)-(.*)/
