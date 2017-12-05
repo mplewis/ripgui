@@ -25,7 +25,11 @@
 
     <div v-else>
       <pre class="error"><code>{{ stderr }}</code></pre>
-      <div v-for="(result, index) in results" v-bind:key="index">
+      <div
+        v-for="(result, index) in results"
+        v-if="index < showCount"
+        v-bind:key="index"
+      >
         <FileResults v-bind:file="result.file" v-bind:lines="result.lines" />
       </div>
     </div>
@@ -53,13 +57,17 @@ export default {
     searching: false,
     results: [],
     stderr: '',
+    showCount: 1,
   }),
   domStreams: ['query$', 'path$', 'options$'],
 
   mounted() {
+    window.onscroll = this.addItemsToFill;
+
     const stream = this.eventStream();
 
     stream.subscribe(({ query, path, options }) => {
+      this.showCount = 1 // hide all results before a repaint hangs the app
       this.query = query // so escaping goes back into the box
       this.queryPresent = query !== '';
       this.searching = false
@@ -70,6 +78,7 @@ export default {
         this.searching = false
         this.results = results
         this.stderr = stderr
+        this.addItemsToFill()
       })
     })
 
@@ -100,6 +109,18 @@ export default {
         .debounceTime(250);
 
       return updates
+    },
+
+    addItemsToFill() {
+      setImmediate(() => {
+        if (!this.queryPresent || this.searching || this.results.length === 0) return
+
+        const CSS__OUTPUT__MARGIN_TOP = 90 // px
+        if ((window.innerHeight + window.scrollY) < document.body.offsetHeight + CSS__OUTPUT__MARGIN_TOP) return
+
+        this.showCount += 1
+        setImmediate(this.addItemsToFill)
+      })
     }
   }
 }

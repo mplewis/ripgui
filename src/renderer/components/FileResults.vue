@@ -2,13 +2,15 @@
 <div class="file-result" v-on:click="open">
   <p class="file-with-line">{{ file }} @ line {{ line }}</p>
   <div class="scrollable-lines">
-    <Result
+    <div
+      class="result"
       v-for="(line, index) in lines"
+      v-bind:class="['result', { exact: line.exact }]"
       v-bind:key="index"
-      v-bind:num="line.num"
-      v-bind:exact="line.exact"
-      v-bind:content="line.content"
-    />
+    >
+      <div class="num">{{ line.num }}</div>
+      <div class="content"><pre><code>{{ line.content }}</code></pre></div>
+    </div>
   </div>
 </div>
 </template>
@@ -16,18 +18,13 @@
 <script>
 import { spawn } from 'child_process'
 
-import Result from './Result'
-
 export default {
   name: 'FileResults',
-  components: { Result },
   props: {
     file: { type: String, required: true },
     lines: { type: Array, required: true }
   },
-  data: () => ({
-    line: '',
-  }),
+  data: () => ({ line: null }),
   mounted() {
     this.line = this.lines.filter(l => l.exact)[0].num
   },
@@ -40,10 +37,7 @@ export default {
           position: 'bottom-center',
           fullWidth: true,
           duration: 0,
-          action: {
-            text: '✖',
-            onClick: (e, toast) => toast.goAway(0)
-          }
+          action: { text: '✖', onClick: (e, toast) => toast.goAway(0) }
         })
       })
     }
@@ -88,6 +82,32 @@ function backgroundProcess (cmd, args) {
   margin-bottom: 8px;
   font-weight: bold;
 }
+
+/* results */
+
+pre {
+  margin: 0;
+}
+
+.result {
+  display: flex;
+  font-family: "Fira Code";
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.result.exact {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.result .num {
+  width: 40px;
+  text-align: right;
+  margin-right: 10px;
+  flex: 0 0 auto;
+}
+
+/* toast errors */
 
 .toasted-container.full-width {
   right: 2%;

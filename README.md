@@ -49,7 +49,6 @@ yarn lint
 
 * Weird bad-filename-with-parens parsing
 * Escaping is subject to debounce time
-* Parser blocks when it runs for a long time
 
 # License
 
