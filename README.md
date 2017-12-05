@@ -39,6 +39,9 @@ yarn lint
   * with persistence between runs
 * Filetype include/exclude GUI
   * and other Ripgrep options
+* Open with working directory passed in as `ARGV[1]`
+  * Remember last working directory
+* Move from CSS to Sass
 * Automated testing
 * Automated releases
 
@@ -46,6 +49,8 @@ yarn lint
 
 * Weird bad-filename-with-parens parsing
 * Hitting Escape a few times blows up the input and hangs the app
+* Cmd-A in boxes isn't selecting all
+* Parser blocks when it runs for a long time
 
 # License
 
